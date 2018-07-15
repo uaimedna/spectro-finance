@@ -1,8 +1,9 @@
 var PRICE_UPDATE_INTERVAL = 1 * 60 * 1000 // 1 min;
+var CURRENCY_API_ANDPOINT = 'https://api.coindesk.com/v1/bpi/currentprice.json';
 
 function updateCurrencyData()
 {
-    fetch('https://api.coindesk.com/v1/bpi/currentprice.json')
+    fetch(CURRENCY_API_ANDPOINT)
         .then(response => response.json())
         .then(json => {
             app.currencyData = json.bpi;
@@ -15,6 +16,13 @@ function spill(bucket, target, value)
     target.push(value);
 }
 
+function decodeSpecialHTML(text)
+{
+    var area = document.createElement("textarea");
+    area.innerHTML = text;
+    return area.value;
+}
+
 var app = new Vue({
     el: '#btc-converter',
     data: {
@@ -22,31 +30,27 @@ var app = new Vue({
         availableCurrencies: [
             'EUR', 'USD', 'GBP'
         ],
-        viewableCurrencies: [
-            
-        ],
-        currencyData: {} //empty for now. Will be parsed from json
+        viewableCurrencies: [],
+        currencyData: {} // Empty for now. Will be parsed from json
     },
     methods: {
-        addCurrency: function (currency) {
+        addCurrency: function (currency) 
+        {
             spill(this.availableCurrencies, this.viewableCurrencies, currency);
         },
-        removeCurrency: function (currency) {
+        removeCurrency: function (currency) 
+        {
             spill(this.viewableCurrencies, this.availableCurrencies, currency);
         },
-        getBtcValue: function (currency) {
+        getBtcValue: function (currency) 
+        {
             let currencyData = this.currencyData[currency];
-
-            //we need to decode this god damn symbol
-            var area = document.createElement("textarea");
-            area.innerHTML = currencyData.symbol;
-            let symbol = area.value;
-
-            return symbol + "" + numeral(this.btcAmount * currencyData.rate_float).format('0,0.00');
+            return decodeSpecialHTML(currencyData.symbol) + "" + numeral(this.btcAmount * currencyData.rate_float).format('0,0.00');
         }
     },
-    created() {
+    created() 
+    {
         updateCurrencyData();
         setInterval(updateCurrencyData, PRICE_UPDATE_INTERVAL);
     }
-  })
+})
