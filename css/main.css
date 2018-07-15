@@ -1,0 +1,6 @@
+i.times:hover {
+    cursor: pointer !important;
+}
+i.times {
+    pointer-events: auto !important;    
+}
