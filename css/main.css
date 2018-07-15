@@ -4,3 +4,14 @@ i.times:hover {
 i.times {
     pointer-events: auto !important;    
 }
+
+#btc-converter {
+    margin: 10px;
+    background: #f8f8f8;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#btc-converter .ui.input {
+    margin-bottom: 10px;
+}
