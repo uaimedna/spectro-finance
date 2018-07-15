@@ -25,14 +25,14 @@
 <body>
     <div id="btc-converter" >
         <div class="ui right labeled fluid input">
-            <input type="text" placeholder="Enter BTC amount">
+            <input v-model.number="btcAmount" type="number" placeholder="Enter BTC amount">
             <div class="ui label">
                 BTC
             </div>
         </div>
         <div v-for="currency in viewableCurrencies" class="ui fluid right labeled left icon input">
             <i v-on:click="removeCurrency(currency)" class="times icon"></i>
-            <input type="text" placeholder="Enter BTC amount">
+            <input type="text" placeholder="Enter BTC amount" disabled :value="getBtcValue(currency)">
             <div class="ui label">
                 {{ currency }}
             </div>

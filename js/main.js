@@ -18,14 +18,14 @@ function spill(bucket, target, value)
 var app = new Vue({
     el: '#btc-converter',
     data: {
-      tstt: 'Hello Vue! asdasd',
-      availableCurrencies: [
-        'EUR', 'USD', 'GBP'
-      ],
-      viewableCurrencies: [
-
-      ],
-      currencyData: {} //empty for now. Will be parsed from json
+        btcAmount: 0,
+        availableCurrencies: [
+            'EUR', 'USD', 'GBP'
+        ],
+        viewableCurrencies: [
+            
+        ],
+        currencyData: {} //empty for now. Will be parsed from json
     },
     methods: {
         addCurrency: function (currency) {
@@ -33,6 +33,16 @@ var app = new Vue({
         },
         removeCurrency: function (currency) {
             spill(this.viewableCurrencies, this.availableCurrencies, currency);
+        },
+        getBtcValue: function (currency) {
+            let currencyData = this.currencyData[currency];
+
+            //we need to decode this god damn symbol
+            var area = document.createElement("textarea");
+            area.innerHTML = currencyData.symbol;
+            let symbol = area.value;
+
+            return symbol + "" + numeral(this.btcAmount * currencyData.rate_float).format('0,0.00');
         }
     },
     created() {
